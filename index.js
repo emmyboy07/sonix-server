@@ -46,10 +46,17 @@ async function createBrowser() {
         if (!page.isClosed()) {
             console.log("🖥 Setting viewport...");
             await page.setViewport({ width: 1920, height: 1080 });
-            console.log("✅ Viewport set");
+
+            // Inject region-specific headers
+            await page.setExtraHTTPHeaders({
+                'x-client-info': '{"timezone":"Africa/Lagos"}',
+                'Accept-Language': 'en-NG,en;q=0.9'
+            });
+
+            console.log("✅ Headers injected");
         }
     } catch (err) {
-        console.warn('⚠️ Could not set viewport:', err.message);
+        console.warn('⚠️ Could not set viewport or headers:', err.message);
     }
 
     return { browser, page };
@@ -168,7 +175,7 @@ async function fetchDownloadLink(title, expectedYear = null, matchYear = true, s
 
 app.get("/download", async (req, res) => {
     const tmdb_id = req.query.tmdb_id;
-    const type = req.query.type === 'tv' ? 'tv' : 'movie'; // default to movie
+    const type = req.query.type === 'tv' ? 'tv' : 'movie';
 
     if (!tmdb_id) {
         return res.status(400).json({ error: "Please provide a TMDB ID using the 'tmdb_id' query parameter" });
