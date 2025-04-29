@@ -21,43 +21,25 @@ async function getTMDBData(tmdb_id, type) {
 }
 
 async function createBrowser() {
-    console.log("🚀 Launching browser...");
+    console.log("🚀 Launching headless browser...");
     const browser = await puppeteer.launch({
-        executablePath: process.env.NODE_ENV === 'production'
-            ? process.env.PUPPETEER_EXECUTABLE_PATH
-            : puppeteer.executablePath(),
-        headless: true,
+        headless: 'new', // for puppeteer v19+, 'new' ensures headless with extensions
         args: [
             '--no-sandbox',
             '--disable-dev-shm-usage',
-            '--disable-setuid-sandbox',
-            '--disable-gpu',
-            '--single-process',
-            '--start-maximized'
-        ],
-        defaultViewport: null
+            '--disable-setuid-sandbox'
+        ]
     });
 
     if (!browser) throw new Error("❌ Browser did not launch");
 
     const page = await browser.newPage();
+    await page.setViewport({ width: 1920, height: 1080 });
 
-    try {
-        if (!page.isClosed()) {
-            console.log("🖥 Setting viewport...");
-            await page.setViewport({ width: 1920, height: 1080 });
-
-            // Inject region-specific headers
-            await page.setExtraHTTPHeaders({
-                'x-client-info': '{"timezone":"Africa/Lagos"}',
-                'Accept-Language': 'en-NG,en;q=0.9'
-            });
-
-            console.log("✅ Headers injected");
-        }
-    } catch (err) {
-        console.warn('⚠️ Could not set viewport or headers:', err.message);
-    }
+    await page.setExtraHTTPHeaders({
+        'x-client-info': '{"timezone":"Africa/Lagos"}',
+        'Accept-Language': 'en-NG,en;q=0.9'
+    });
 
     return { browser, page };
 }
@@ -144,10 +126,8 @@ async function fetchDownloadLink(title, expectedYear = null, matchYear = true, s
                     credentials: 'include'
                 });
                 const data = await response.json();
-                console.log('✅ Download Data:', data);
                 return data;
             } catch (error) {
-                console.error('❌ Fetch Error:', error);
                 return { error: 'Failed to fetch download data in browser context.' };
             }
         }, downloadApiUrl, refererHeader);
