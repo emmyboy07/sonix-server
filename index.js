@@ -36,9 +36,9 @@ async function createBrowser() {
     const page = await browser.newPage();
     await page.setViewport({ width: 1920, height: 1080 });
 
+    // Removed the 'x-client-info' header and any region-specific 'Accept-Language' setting
     await page.setExtraHTTPHeaders({
-        'x-client-info': '{"timezone":"Africa/Lagos"}',
-        'Accept-Language': 'en-NG,en;q=0.9'
+        'Accept-Language': 'en'  // Now only 'en' is used, removing any region-specific data
     });
 
     return { browser, page };
@@ -121,7 +121,7 @@ async function fetchDownloadLink(title, expectedYear = null, matchYear = true, s
                     headers: {
                         'Referer': referer,
                         'Accept': 'application/json',
-                        'x-client-info': JSON.stringify({ timezone: 'Africa/Lagos' })
+                        // 'x-client-info' removed to avoid any region info
                     },
                     credentials: 'include'
                 });
