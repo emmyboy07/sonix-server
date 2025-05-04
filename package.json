@@ -1,30 +1,22 @@
 {
-    "name": "moviebox-scraper",
+    "name": "moviebox-api",
     "version": "1.0.0",
-    "description": "Scrapes moviebox.ng and returns download info for movies and series",
+    "description": "Puppeteer-based API to fetch movie download links from moviebox.ng",
     "main": "index.js",
     "scripts": {
-      "start": "node index.js",
-      "dev": "nodemon index.js"
+      "start": "node index.js"
+    },
+    "dependencies": {
+      "axios": "^1.4.0",
+      "cors": "^2.8.5",
+      "express": "^4.18.2",
+      "puppeteer": "^19.0.0",
+      "user-agents": "^1.0.103",
+      "dotenv": "^16.0.3"
     },
     "engines": {
-      "node": ">=18.0.0"
+      "node": ">=14.0.0"
     },
-    "keywords": ["puppeteer", "moviebox", "scraper", "express", "movies", "series"],
-    "author": "Your Name",
-    "license": "MIT",
-    "dependencies": {
-      "axios": "^1.6.8",
-      "cors": "^2.8.5",
-      "dotenv": "^16.3.1",
-      "express": "^4.19.2",
-      "puppeteer": "^21.6.0",
-      "puppeteer-extra": "^3.3.6",
-      "puppeteer-extra-plugin-stealth": "^2.11.1",
-      "user-agents": "^1.0.1266"
-    },
-    "devDependencies": {
-      "nodemon": "^3.1.0"
-    }
+    "license": "ISC"
   }
   
