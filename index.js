@@ -50,7 +50,7 @@ async function createBrowser() {
     const userAgent = new UserAgent({ deviceCategory: 'desktop' });
     
     const browser = await puppeteer.launch({
-        headless: 'new',
+        headless: true,  // Change to true for headless mode
         args: [
             '--no-sandbox',
             '--disable-dev-shm-usage',
@@ -131,6 +131,7 @@ async function createBrowser() {
 
     return { browser, page };
 }
+
 
 async function fetchDownloadLink(title, expectedYear = null, matchYear = true, season = 0, episode = 0) {
     // Check cache first
