@@ -46,7 +46,7 @@ async function createBrowser() {
     const userAgent = new UserAgent({ deviceCategory: 'desktop' });
     
     const browser = await puppeteer.launch({
-        headless: false, // Change to 'true' if you want it to run headless
+        headless: 'new', // Change to 'true' if you want it to run headless
         args: [
             '--no-sandbox',
             '--disable-dev-shm-usage',
