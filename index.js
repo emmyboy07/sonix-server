@@ -21,9 +21,9 @@ async function getTMDBData(tmdb_id, type) {
 }
 
 async function createBrowser() {
-    console.log("🚀 Launching headless browser...");
+    console.log("🚀 Launching browser with Nigerian headers...");
     const browser = await puppeteer.launch({
-        headless: 'new', // for puppeteer v19+, 'new' ensures headless with extensions
+        headless: 'new',
         args: [
             '--no-sandbox',
             '--disable-dev-shm-usage',
@@ -31,15 +31,16 @@ async function createBrowser() {
         ]
     });
 
-    if (!browser) throw new Error("❌ Browser did not launch");
-
     const page = await browser.newPage();
     await page.setViewport({ width: 1920, height: 1080 });
 
-    // Removed the 'x-client-info' header and any region-specific 'Accept-Language' setting
+    // Nigerian browser configuration
     await page.setExtraHTTPHeaders({
-        'Accept-Language': 'en'  // Now only 'en' is used, removing any region-specific data
+        'Accept-Language': 'en-NG,en;q=0.9', // Explicit Nigerian locale
     });
+
+    // Common Nigerian user agent
+    await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36');
 
     return { browser, page };
 }
